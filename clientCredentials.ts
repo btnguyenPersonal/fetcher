@@ -11,7 +11,7 @@ export async function clientCredentials(config: {
     params.append('scope', config.scope);
 
     try {
-        debug && console.log(`client: ${client}`);
+        debug && console.log('config: ', config);
         debug && console.log(`fetching client credentials from ${config.url}...`);
         const response = await fetch(config.url, {
             method: 'POST',
@@ -21,13 +21,15 @@ export async function clientCredentials(config: {
             body: params.toString(),
         });
         if (!response.ok) {
+            debug && console.error('response: ', response);
             const errorData = await response.json();
-            throw new Error(`Failed to get token: ${errorData.error_description || response.statusText}`);
+            throw new Error(`Failed to get token: ${response.status} ${errorData.error_description || response.statusText}`);
         }
         const data = await response.json();
         debug && console.log(`retrieved token: ${data.access_token}`);
         return data.access_token;
     } catch (e) {
+        debug && console.error(e);
         throw e;
     }
 }
