@@ -1,4 +1,4 @@
-export async function clientCredentials(client: {
+export async function clientCredentials(config: {
     url: string,
     clientId: string,
     clientSecret: string,
